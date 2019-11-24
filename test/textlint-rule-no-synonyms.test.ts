@@ -7,7 +7,16 @@ import rule from "../src/textlint-rule-no-synonyms";
 tester.run("textlint-rule-no-synonyms", rule, {
     valid: [
         "新参入、借り入れ、問題のパスポート、マネー、雇入 片方のペアだけならOKです",
-        "This is アーカイブ"
+        "This is アーカイブ",
+        // allow links
+        `「[インターフェース](https://example.com)」と「[インタフェース](https://example.com)」`,
+        // "allows
+        {
+            text: `ウェブアプリとウェブアプリケーションの違いは許容する`,
+            options: {
+                allows: ["ウェブアプリ"]　// <= 片方が許可されていればOK
+            }
+        }
     ],
     invalid: [{
         text: "この雇入と雇入れの違いは難しい問題だ",

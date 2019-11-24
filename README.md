@@ -33,6 +33,11 @@ textlint --rule @textlint-ja/no-synonyms README.md
 ```ts
 export interface Options {
     /**
+     * 許可するワードの配列
+     * ワードは完全一致で比較し、一致した場合は無視されます
+     */
+    allows?: string[];
+    /**
      * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
      * trueの場合はカタカナとアルファベットの表記ゆれを許可します
      * Default: true
@@ -47,6 +52,7 @@ export interface Options {
 {
     "rules": {
         "@textlint-ja/no-synonyms": {
+            "allows": ["ウェブアプリ", "ウェブアプリケーション"],
             "allowAlphabet": false
         }
     }

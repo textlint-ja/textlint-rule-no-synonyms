@@ -18,10 +18,13 @@ export class ItemGroup {
 
     }
 
-    usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet }: { allowAlphabet: boolean }): SudachiSynonyms[] {
+    usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allows }: { allowAlphabet: boolean, allows: string[] }): SudachiSynonyms[] {
         // sort by used
         return Array.from(usedItemSet.values()).filter(item => {
             if (allowAlphabet && item.hyoukiYure === "アルファベット表記") {
+                return false;
+            }
+            if (allows.includes(item.midashi)) {
                 return false;
             }
             return this.items.includes(item);

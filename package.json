@@ -49,6 +49,7 @@
     "tabWidth": 4
   },
   "dependencies": {
+    "textlint-rule-helper": "^2.1.1",
     "tiny-segmenter": "^0.2.0"
   },
   "devDependencies": {
