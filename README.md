@@ -20,6 +20,11 @@ Install with [npm](https://www.npmjs.com/):
 辞書となる[sudachi-synonyms-dictionary](https://github.com/azu/sudachi-synonyms-dictionary)は[peerDependencies](https://npm.github.io/using-pkgs-docs/package-json/types/peerdependencies.html)なので、ルールとは別途インストールする必要があります。
 ルール間で[sudachi-synonyms-dictionary](https://github.com/azu/sudachi-synonyms-dictionary)を共有した際に、辞書を一意にするためです。
 
+> Cannot find module 'sudachi-synonyms-dictionary'
+
+上記のエラーが出ている場合は`sudachi-synonyms-dictionary`をインストールしてください
+
+    npm install sudachi-synonyms-dictionary
 
 ## Usage
 
