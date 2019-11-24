@@ -21,6 +21,12 @@ tester.run("textlint-rule-no-synonyms", rule, {
         }
     ],
     invalid: [{
+        text: "サーバとサーバーの表記揺れがある",
+        errors: [{
+            message: "同義語である「サーバ」「サーバー」が利用されています",
+            index: 4
+        }]
+    }, {
         text: "この雇入と雇入れの違いは難しい問題だ",
         errors: [{
             message: "同義語である「雇入」「雇入れ」が利用されています",

@@ -4,6 +4,13 @@
 
 同義語の辞書として[Sudachi 同義語辞書](https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md)を利用しています。
 
+**NG**:
+
+```
+サーバとサーバーの表記揺れがある。
+この雇入と雇入れの違いを見つける。
+```
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
@@ -31,15 +38,17 @@ textlint --rule @textlint-ja/no-synonyms README.md
 ## Options
 
 ```ts
-export interface Options {
+{
     /**
      * 許可するワードの配列
      * ワードは完全一致で比較し、一致した場合は無視されます
+     * 例) ["ウェブアプリ", "ウェブアプリケーション"]
      */
     allows?: string[];
     /**
      * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
      * trueの場合はカタカナとアルファベットの表記ゆれを許可します
+     * 例) 「ブログ」と「blog」
      * Default: true
      */
     allowAlphabet?: boolean;
