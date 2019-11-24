@@ -21,7 +21,11 @@ export class ItemGroup {
     usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allows }: { allowAlphabet: boolean, allows: string[] }): SudachiSynonyms[] {
         // sort by used
         return Array.from(usedItemSet.values()).filter(item => {
-            if (allowAlphabet && item.hyoukiYure === "アルファベット表記") {
+            if (allowAlphabet && (item.hyoukiYure === "アルファベット表記" || item.ryakusyou === "略語・略称/アルファベット")) {
+                // アルファベット表記
+                // blog <-> ブログ
+                // 略語・略称/アルファベット
+                // OS <-> オペレーションシステム
                 return false;
             }
             if (allows.includes(item.midashi)) {
@@ -32,12 +36,29 @@ export class ItemGroup {
     }
 }
 
+/**
+ * インストールのチェック
+ */
+const assertInstallationSudachiSynonymsDictionary = () => {
+    try {
+        require("sudachi-synonyms-dictionary");
+    } catch (error) {
+        throw new Error(`sudachi-synonyms-dictionaryがインストールされていません。
+ルールとは別にsudachi-synonyms-dictionaryをインストールしてください。
+      
+$ npm install sudachi-synonyms-dictionary
+
+
+`)
+    }
+};
 export type IndexType = { keyItemGroupMap: Map<Midashi, ItemGroup[]>; SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup>; };
 let _ret: IndexType | null = null;
 export const createIndex = async (): Promise<IndexType> => {
     if (_ret) {
         return Promise.resolve(_ret);
     }
+    assertInstallationSudachiSynonymsDictionary();
     const keyItemGroupMap: Map<Midashi, ItemGroup[]> = new Map();
     const SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup> = new Map();
     const SynonymsDictionary = await fetchDictionary();

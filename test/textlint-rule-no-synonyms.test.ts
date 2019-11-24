@@ -7,10 +7,14 @@ import rule from "../src/textlint-rule-no-synonyms";
 tester.run("textlint-rule-no-synonyms", rule, {
     valid: [
         "新参入、借り入れ、問題のパスポート、マネー、雇入 片方のペアだけならOKです",
+        "インターフェースとインターフェースは同じなのでOK",
         "This is アーカイブ",
         // allowAlphabet: true
+        // item.hyoukiYure === "アルファベット表記"
         "blogはブログです",
-        // allow links
+        // item.ryakusyou === "略語・略称/アルファベット"
+        "「データベース」「DB」",
+        // allow links by default
         `「[インターフェース](https://example.com)」と「[インタフェース](https://example.com)」`,
         // "allows
         {
