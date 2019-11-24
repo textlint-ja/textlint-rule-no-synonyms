@@ -1,4 +1,4 @@
-# @textlint-ja/textlint-rule-no-synonyms
+# @textlint-ja/textlint-rule-no-synonyms [![Actions Status](https://github.com/textlint-ja/textlint-rule-no-synonyms/workflows/ci/badge.svg)](https://github.com/textlint-ja/textlint-rule-no-synonyms/actions?query=workflow%3Aci)
 
 同義語を表記ゆれをチェックするtextlintルールです。
 
