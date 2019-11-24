@@ -1,7 +1,7 @@
 {
   "name": "@textlint-ja/textlint-rule-no-synonyms",
   "version": "1.0.0",
-  "description": "同義語を統一を促すtextlintルール",
+  "description": "同義語を表記ゆれをチェックするtextlintルール",
   "keywords": [
     "textlintrule"
   ],

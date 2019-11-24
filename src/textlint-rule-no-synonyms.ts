@@ -7,16 +7,15 @@ const segmenter = new TinySegmenter(); // インスタンス生成
 
 export interface Options {
     /**
-     * 6 : 同じ語形の語の中での表記揺れ情報
+     * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
+     * trueの場合はカタカナとアルファベットの表記ゆれを許可します
+     * Default: true
      */
     allowAlphabet?: boolean;
 }
 
 
 export const DefaultOptions: Required<Options> = {
-    /**
-     * 6 : 同じ語形の語の中での表記揺れ情報
-     */
     allowAlphabet: true
 };
 

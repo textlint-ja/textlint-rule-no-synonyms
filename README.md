@@ -1,6 +1,8 @@
 # @textlint-ja/textlint-rule-no-synonyms
 
-同義語を統一を促すtextlintルール
+同義語を表記ゆれをチェックするtextlintルールです。
+
+同義語の辞書として[Sudachi 同義語辞書](https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md)を利用しています。
 
 ## Install
 
@@ -25,6 +27,25 @@ Via CLI
 ```
 textlint --rule @textlint-ja/no-synonyms README.md
 ```
+
+## Options
+
+```ts
+export interface Options {
+    /**
+     * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
+     * trueの場合はカタカナとアルファベットの表記ゆれを許可します
+     * Default: true
+     */
+    allowAlphabet?: boolean;
+}
+```
+
+## References
+
+- [Sudachi 同義語辞書](https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md)
+- [azu/sudachi-synonyms-dictionary: Sudachi's synonyms dictionary](https://github.com/azu/sudachi-synonyms-dictionary)
+- [azu/sudachi-synonyms-parser: Sudachi's synonyms dictionary parser](https://github.com/azu/sudachi-synonyms-parser)
 
 
 ## Changelog
