@@ -8,6 +8,8 @@ tester.run("textlint-rule-no-synonyms", rule, {
     valid: [
         "新参入、借り入れ、問題のパスポート、マネー、雇入 片方のペアだけならOKです",
         "This is アーカイブ",
+        // allowAlphabet: true
+        "blogはブログです",
         // allow links
         `「[インターフェース](https://example.com)」と「[インタフェース](https://example.com)」`,
         // "allows
@@ -24,5 +26,15 @@ tester.run("textlint-rule-no-synonyms", rule, {
             message: "同義語である「雇入」「雇入れ」が利用されています",
             index: 5
         }]
-    }]
+    },
+        {
+            text: "blogはブログです",
+            options: {
+                allowAlphabet: false
+            },
+            errors: [{
+                message: "同義語である「blog」「ブログ」が利用されています",
+                index: 5
+            }]
+        }]
 });

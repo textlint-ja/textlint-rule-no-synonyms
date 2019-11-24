@@ -48,7 +48,6 @@ export const createIndex = async (): Promise<IndexType> => {
         }, {} as { [index: string]: SudachiSynonyms[] });
         const itemGroups = Object.values(groupByVocabularyNumber).filter(items => {
             return items.length > 1;
-
         }).map(items => {
             return new ItemGroup(items);
         });
