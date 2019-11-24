@@ -41,6 +41,18 @@ export interface Options {
 }
 ```
 
+**Example**:
+
+```json
+{
+    "rules": {
+        "@textlint-ja/no-synonyms": {
+            "allowAlphabet": false
+        }
+    }
+}
+```
+
 ## References
 
 - [Sudachi 同義語辞書](https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md)
