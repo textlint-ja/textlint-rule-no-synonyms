@@ -1,10 +1,12 @@
 # @textlint-ja/textlint-rule-no-synonyms [![Actions Status](https://github.com/textlint-ja/textlint-rule-no-synonyms/workflows/ci/badge.svg)](https://github.com/textlint-ja/textlint-rule-no-synonyms/actions?query=workflow%3Aci)
 
-同義語を表記ゆれをチェックするtextlintルールです。
+文章中の同義語を表記ゆれをチェックするtextlintルールです。
 
 同義語の辞書として[Sudachi 同義語辞書](https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md)を利用しています。
 
 **NG**:
+
+1つの文章中に同一語彙の別表記を利用している場合を表記ゆれとしてエラーにします。
 
 ```
 サーバとサーバーの表記揺れがある。
