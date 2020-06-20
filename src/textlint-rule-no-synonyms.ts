@@ -20,16 +20,25 @@ export interface Options {
      * Default: true
      */
     allowAlphabet?: boolean;
+    /**
+     * 同じ語形の語の中での漢数字と数字の表記ゆれを許可するかどうか
+     * trueの場合は漢数字と数字の表記ゆれを許可します
+     * 例) 「1」と「一」
+     * Default: true
+     */
+    allowNumber?: boolean;
 }
 
 
 export const DefaultOptions: Required<Options> = {
     allows: [],
-    allowAlphabet: true
+    allowAlphabet: true,
+    allowNumber: true
 };
 
 const report: TextlintRuleReporter<Options> = (context, options = {}) => {
-    const allowAlphabet = options.allowAlphabet !== undefined ? options.allowAlphabet : DefaultOptions.allowAlphabet;
+    const allowAlphabet = options.allowAlphabet ?? DefaultOptions.allowAlphabet;
+    const allowNumber = options.allowAlphabet ?? DefaultOptions.allowNumber;
     const allows = options.allows !== undefined ? options.allows : DefaultOptions.allows;
     const { Syntax, getSource, RuleError } = context;
     const usedSudachiSynonyms: Set<SudachiSynonyms> = new Set();
@@ -75,14 +84,15 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
                     for (const itemGroup of usedItemGroup.values()) {
                         const items = itemGroup.usedItems(usedSudachiSynonyms, {
                             allows,
-                            allowAlphabet
+                            allowAlphabet,
+                            allowNumber
                         });
                         if (items.length >= 2) {
                             const 同義の見出しList = items.map(item => item.midashi);
                             // select last used
                             const matchSegment = locationMap.get(items[items.length - 1]);
                             const index = matchSegment ? matchSegment.index : 0;
-                            const message = `同義語である「${同義の見出しList.join("」「")}」が利用されています`;
+                            const message = `同義語である「${同義の見出しList.join("」と「")}」が利用されています`;
                             report(node, new RuleError(message, {
                                 index
                             }));

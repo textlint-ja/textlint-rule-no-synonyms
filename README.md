@@ -61,6 +61,13 @@ textlint --rule @textlint-ja/no-synonyms README.md
      * Default: true
      */
     allowAlphabet?: boolean;
+    /**
+     * 同じ語形の語の中での漢数字と数字の表記ゆれを許可するかどうか
+     * trueの場合は漢数字と数字の表記ゆれを許可します
+     * 例) 「1」と「一」
+     * Default: true
+     */
+    allowNumber?: boolean;
 }
 ```
 
@@ -71,7 +78,8 @@ textlint --rule @textlint-ja/no-synonyms README.md
     "rules": {
         "@textlint-ja/no-synonyms": {
             "allows": ["ウェブアプリ", "ウェブアプリケーション"],
-            "allowAlphabet": false
+            "allowAlphabet": false,
+            "allowNumber": false
         }
     }
 }
