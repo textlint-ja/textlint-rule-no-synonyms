@@ -38,7 +38,7 @@ export const DefaultOptions: Required<Options> = {
 
 const report: TextlintRuleReporter<Options> = (context, options = {}) => {
     const allowAlphabet = options.allowAlphabet ?? DefaultOptions.allowAlphabet;
-    const allowNumber = options.allowAlphabet ?? DefaultOptions.allowNumber;
+    const allowNumber = options.allowNumber ?? DefaultOptions.allowNumber;
     const allows = options.allows !== undefined ? options.allows : DefaultOptions.allows;
     const { Syntax, getSource, RuleError } = context;
     const usedSudachiSynonyms: Set<SudachiSynonyms> = new Set();

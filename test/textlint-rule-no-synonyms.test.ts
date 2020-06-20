@@ -48,5 +48,15 @@ tester.run("textlint-rule-no-synonyms", rule, {
                 message: "同義語である「blog」と「ブログ」が利用されています",
                 index: 5
             }]
+        },
+        {
+            text: "1は数字の一種です",
+            options: {
+                allowNumber: false
+            },
+            errors: [{
+                message: "同義語である「1」と「一」が利用されています",
+                index: 5
+            }]
         }]
 });
