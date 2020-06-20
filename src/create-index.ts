@@ -1,4 +1,5 @@
 import { fetchDictionary, SudachiSynonyms } from "sudachi-synonyms-dictionary";
+import { isNumberString } from "./is-number";
 
 export type Midashi = string;
 
@@ -18,7 +19,7 @@ export class ItemGroup {
 
     }
 
-    usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allows }: { allowAlphabet: boolean, allows: string[] }): SudachiSynonyms[] {
+    usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allowNumber, allows }: { allowAlphabet: boolean; allowNumber: boolean; allows: string[] }): SudachiSynonyms[] {
         // sort by used
         return Array.from(usedItemSet.values()).filter(item => {
             if (allowAlphabet && (item.hyoukiYure === "アルファベット表記" || item.ryakusyou === "略語・略称/アルファベット")) {
@@ -26,6 +27,10 @@ export class ItemGroup {
                 // blog <-> ブログ
                 // 略語・略称/アルファベット
                 // OS <-> オペレーションシステム
+                return false;
+            }
+            // 数値の違いは無視する
+            if (allowNumber && isNumberString(item.midashi)) {
                 return false;
             }
             if (allows.includes(item.midashi)) {
@@ -49,7 +54,7 @@ const assertInstallationSudachiSynonymsDictionary = () => {
 $ npm install sudachi-synonyms-dictionary
 
 
-`)
+`);
     }
 };
 export type IndexType = { keyItemGroupMap: Map<Midashi, ItemGroup[]>; SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup>; };

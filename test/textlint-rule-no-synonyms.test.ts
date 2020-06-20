@@ -12,6 +12,8 @@ tester.run("textlint-rule-no-synonyms", rule, {
         // allowAlphabet: true
         // item.hyoukiYure === "アルファベット表記"
         "blogはブログです",
+        // allowNumber: true
+        "1は数字の一種です",
         // item.ryakusyou === "略語・略称/アルファベット"
         "「データベース」「DB」",
         // allow links by default
@@ -27,13 +29,13 @@ tester.run("textlint-rule-no-synonyms", rule, {
     invalid: [{
         text: "サーバとサーバーの表記揺れがある",
         errors: [{
-            message: "同義語である「サーバ」「サーバー」が利用されています",
+            message: "同義語である「サーバ」と「サーバー」が利用されています",
             index: 4
         }]
     }, {
         text: "この雇入と雇入れの違いは難しい問題だ",
         errors: [{
-            message: "同義語である「雇入」「雇入れ」が利用されています",
+            message: "同義語である「雇入」と「雇入れ」が利用されています",
             index: 5
         }]
     },
@@ -43,7 +45,17 @@ tester.run("textlint-rule-no-synonyms", rule, {
                 allowAlphabet: false
             },
             errors: [{
-                message: "同義語である「blog」「ブログ」が利用されています",
+                message: "同義語である「blog」と「ブログ」が利用されています",
+                index: 5
+            }]
+        },
+        {
+            text: "1は数字の一種です",
+            options: {
+                allowNumber: false
+            },
+            errors: [{
+                message: "同義語である「1」と「一」が利用されています",
                 index: 5
             }]
         }]
