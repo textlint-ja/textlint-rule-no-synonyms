@@ -19,12 +19,12 @@ Install with [npm](https://www.npmjs.com/):
 
     npm install @textlint-ja/textlint-rule-no-synonyms sudachi-synonyms-dictionary
 
-辞書となる[sudachi-synonyms-dictionary](https://github.com/azu/sudachi-synonyms-dictionary)は[peerDependencies](https://npm.github.io/using-pkgs-docs/package-json/types/peerdependencies.html)なので、ルールとは別途インストールする必要があります。
+辞書となる[sudachi-synonyms-dictionary](https://github.com/azu/sudachi-synonyms-dictionary)は[peerDependencies](https://npm.github.io/using-pkgs-docs/package-json/types/peerdependencies.html)なので、ルールとは別に辞書ファイルをインストールする必要があります。
 ルール間で1つの辞書ファイルを共有するためです。
 
 > Cannot find module 'sudachi-synonyms-dictionary'
 
-上記のエラーが出ている場合は`sudachi-synonyms-dictionary`をインストールしてください
+上記のエラーが出ている場合は辞書ファイルである`sudachi-synonyms-dictionary`をインストールしてください
 
     npm install sudachi-synonyms-dictionary
 
