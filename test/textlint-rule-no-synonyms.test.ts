@@ -24,7 +24,14 @@ tester.run("textlint-rule-no-synonyms", rule, {
             options: {
                 allows: ["ウェブアプリ"]　// <= 片方が許可されていればOK
             }
-        }
+        },
+        // preferWords
+        {
+            text: `ユーザーだけに統一されていればユーザーは許容する`,
+            options: {
+                preferWords: ["ユーザー"]
+            }
+        },
     ],
     invalid: [{
         text: "サーバとサーバーの表記揺れがある",
@@ -58,5 +65,43 @@ tester.run("textlint-rule-no-synonyms", rule, {
                 message: "同義語である「1」と「一」が利用されています",
                 index: 5
             }]
-        }]
+        },
+        {
+            text: "ユーザーは許可しユーザはエラー。allowAlphabetがtrueならuserはエラーにならない",
+            output: "ユーザーは許可しユーザーはエラー。allowAlphabetがtrueならuserはエラーにならない",
+            options: {
+                preferWords: ["ユーザー"]
+            },
+            errors: [{
+                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                index: 8
+            }]
+        },
+        {
+            text: "ユーザーは許可しallowAlphabetがfalseならユーザもuserもエラー",
+            output: "ユーザーは許可しallowAlphabetがfalseならユーザーもユーザーもエラー",
+            options: {
+                preferWords: ["ユーザー"],
+                allowAlphabet: false
+            },
+            errors: [{
+                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                index: 29
+            }, {
+                message: "「ユーザー」の同義語である「user」が利用されています",
+                index: 33
+            }]
+        },
+        {
+            text: "ユーザはエラー",
+            output: "ユーザーはエラー",
+            options: {
+                preferWords: ["ユーザー"]
+            },
+            errors: [{
+                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                index: 0
+            }]
+        },
+    ]
 });

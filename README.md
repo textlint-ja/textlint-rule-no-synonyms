@@ -57,6 +57,12 @@ textlint --rule @textlint-ja/no-synonyms README.md
      */
     allows?: string[];
     /**
+     * 使用を許可する見出し語の配列
+     * 定義された見出し語以外の同義語をエラーにします
+     * 例) ["ユーザー"] // => 「ユーザー」だけ許可し「ユーザ」などはエラーにする
+     */
+    preferWords?: string[];
+    /**
      * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
      * trueの場合はカタカナとアルファベットの表記ゆれを許可します
      * 例) 「ブログ」と「blog」
@@ -80,6 +86,7 @@ textlint --rule @textlint-ja/no-synonyms README.md
     "rules": {
         "@textlint-ja/no-synonyms": {
             "allows": ["ウェブアプリ", "ウェブアプリケーション"],
+            "preferWords": ["ユーザー"],
             "allowAlphabet": false,
             "allowNumber": false
         }
