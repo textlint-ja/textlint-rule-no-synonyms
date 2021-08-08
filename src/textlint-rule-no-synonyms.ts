@@ -14,6 +14,12 @@ export interface Options {
      */
     allows?: string[];
     /**
+     * 使用を許可する見出し語の配列
+     * 定義された見出し語以外の同義語をエラーにします
+     * 例) ["ユーザー"] // => 「ユーザー」だけ許可し「ユーザ」などはエラーにする
+     */
+    preferWords?: string[];
+    /**
      * 同じ語形の語の中でのアルファベットの表記揺れを許可するかどうか
      * trueの場合はカタカナとアルファベットの表記ゆれを許可します
      * 例) 「ブログ」と「blog」
@@ -32,6 +38,7 @@ export interface Options {
 
 export const DefaultOptions: Required<Options> = {
     allows: [],
+    preferWords: [],
     allowAlphabet: true,
     allowNumber: true
 };
@@ -40,7 +47,8 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
     const allowAlphabet = options.allowAlphabet ?? DefaultOptions.allowAlphabet;
     const allowNumber = options.allowNumber ?? DefaultOptions.allowNumber;
     const allows = options.allows !== undefined ? options.allows : DefaultOptions.allows;
-    const { Syntax, getSource, RuleError } = context;
+    const preferWords = options.preferWords !== undefined ? options.preferWords : DefaultOptions.preferWords;
+    const { Syntax, getSource, RuleError, fixer } = context;
     const usedSudachiSynonyms: Set<SudachiSynonyms> = new Set();
     const locationMap: Map<SudachiSynonyms, { index: number }> = new Map();
     const usedItemGroup: Set<ItemGroup> = new Set();
@@ -87,7 +95,19 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
                             allowAlphabet,
                             allowNumber
                         });
-                        if (items.length >= 2) {
+                        const preferWord = preferWords.find(midashi => itemGroup.getItem(midashi))
+                        if (preferWord) {
+                            const deniedItems = items.filter(item => item.midashi !== preferWord)
+                            for (const item of deniedItems) {
+                                const index = locationMap.get(item)?.index ?? 0;
+                                const deniedWord = item.midashi
+                                const message = `「${preferWord}」の同義語である「${deniedWord}」が利用されています`;
+                                report(node, new RuleError(message, {
+                                    index,
+                                    fix: fixer.replaceTextRange([index, index + deniedWord.length], preferWord),
+                                }));
+                            }
+                        } else if (items.length >= 2) {
                             const 同義の見出しList = items.map(item => item.midashi);
                             // select last used
                             const matchSegment = locationMap.get(items[items.length - 1]);
@@ -104,4 +124,7 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
     );
 };
 
-export default report;
+export default {
+    linter: report,
+    fixer: report,
+};

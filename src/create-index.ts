@@ -19,6 +19,10 @@ export class ItemGroup {
 
     }
 
+    getItem(midashi: string): SudachiSynonyms | null {
+        return this.items.find(item => item.midashi === midashi) ?? null
+    }
+
     usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allowNumber, allows }: { allowAlphabet: boolean; allowNumber: boolean; allows: string[] }): SudachiSynonyms[] {
         // sort by used
         return Array.from(usedItemSet.values()).filter(item => {
