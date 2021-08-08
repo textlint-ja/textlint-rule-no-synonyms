@@ -35,12 +35,11 @@ export interface Options {
     allowNumber?: boolean;
 }
 
-
 export const DefaultOptions: Required<Options> = {
     allows: [],
     preferWords: [],
     allowAlphabet: true,
-    allowNumber: true
+    allowNumber: true,
 };
 
 const report: TextlintRuleReporter<Options> = (context, options = {}) => {
@@ -58,10 +57,10 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
         if (!itemGroups) {
             return;
         }
-        itemGroups.forEach(itemGroup => {
+        itemGroups.forEach((itemGroup) => {
             // "アーカイブ" など同じ見出しを複数回もつItemGroupがあるため、ItemGroupごとに1度のみに限定
             let midashAtOnce = false;
-            itemGroup.items.forEach(item => {
+            itemGroup.items.forEach((item) => {
                 if (!midashAtOnce && item.midashi === segment) {
                     midashAtOnce = true;
                     usedSudachiSynonyms.add(item);
@@ -71,9 +70,18 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
             });
         });
     };
-    return wrapReportHandler(context,
+    return wrapReportHandler(
+        context,
         {
-            ignoreNodeTypes: [Syntax.BlockQuote, Syntax.CodeBlock, Syntax.Code, Syntax.Html, Syntax.Link, Syntax.Image, Syntax.Comment]
+            ignoreNodeTypes: [
+                Syntax.BlockQuote,
+                Syntax.CodeBlock,
+                Syntax.Code,
+                Syntax.Html,
+                Syntax.Link,
+                Syntax.Image,
+                Syntax.Comment,
+            ],
         },
         (report) => {
             return {
@@ -93,32 +101,38 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
                         const items = itemGroup.usedItems(usedSudachiSynonyms, {
                             allows,
                             allowAlphabet,
-                            allowNumber
+                            allowNumber,
                         });
-                        const preferWord = preferWords.find(midashi => itemGroup.getItem(midashi))
+                        const preferWord = preferWords.find((midashi) => itemGroup.getItem(midashi));
                         if (preferWord) {
-                            const deniedItems = items.filter(item => item.midashi !== preferWord)
+                            const deniedItems = items.filter((item) => item.midashi !== preferWord);
                             for (const item of deniedItems) {
                                 const index = locationMap.get(item)?.index ?? 0;
-                                const deniedWord = item.midashi
+                                const deniedWord = item.midashi;
                                 const message = `「${preferWord}」の同義語である「${deniedWord}」が利用されています`;
-                                report(node, new RuleError(message, {
-                                    index,
-                                    fix: fixer.replaceTextRange([index, index + deniedWord.length], preferWord),
-                                }));
+                                report(
+                                    node,
+                                    new RuleError(message, {
+                                        index,
+                                        fix: fixer.replaceTextRange([index, index + deniedWord.length], preferWord),
+                                    })
+                                );
                             }
                         } else if (items.length >= 2) {
-                            const 同義の見出しList = items.map(item => item.midashi);
+                            const 同義の見出しList = items.map((item) => item.midashi);
                             // select last used
                             const matchSegment = locationMap.get(items[items.length - 1]);
                             const index = matchSegment ? matchSegment.index : 0;
                             const message = `同義語である「${同義の見出しList.join("」と「")}」が利用されています`;
-                            report(node, new RuleError(message, {
-                                index
-                            }));
+                            report(
+                                node,
+                                new RuleError(message, {
+                                    index,
+                                })
+                            );
                         }
                     }
-                }
+                },
             };
         }
     );

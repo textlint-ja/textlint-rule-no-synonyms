@@ -15,18 +15,22 @@ export type Midashi = string;
  * usedItemGroup.forEach
  */
 export class ItemGroup {
-    constructor(public items: SudachiSynonyms[]) {
-
-    }
+    constructor(public items: SudachiSynonyms[]) {}
 
     getItem(midashi: string): SudachiSynonyms | null {
-        return this.items.find(item => item.midashi === midashi) ?? null
+        return this.items.find((item) => item.midashi === midashi) ?? null;
     }
 
-    usedItems(usedItemSet: Set<SudachiSynonyms>, { allowAlphabet, allowNumber, allows }: { allowAlphabet: boolean; allowNumber: boolean; allows: string[] }): SudachiSynonyms[] {
+    usedItems(
+        usedItemSet: Set<SudachiSynonyms>,
+        { allowAlphabet, allowNumber, allows }: { allowAlphabet: boolean; allowNumber: boolean; allows: string[] }
+    ): SudachiSynonyms[] {
         // sort by used
-        return Array.from(usedItemSet.values()).filter(item => {
-            if (allowAlphabet && (item.hyoukiYure === "アルファベット表記" || item.ryakusyou === "略語・略称/アルファベット")) {
+        return Array.from(usedItemSet.values()).filter((item) => {
+            if (
+                allowAlphabet &&
+                (item.hyoukiYure === "アルファベット表記" || item.ryakusyou === "略語・略称/アルファベット")
+            ) {
                 // アルファベット表記
                 // blog <-> ブログ
                 // 略語・略称/アルファベット
@@ -61,7 +65,10 @@ $ npm install sudachi-synonyms-dictionary
 `);
     }
 };
-export type IndexType = { keyItemGroupMap: Map<Midashi, ItemGroup[]>; SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup>; };
+export type IndexType = {
+    keyItemGroupMap: Map<Midashi, ItemGroup[]>;
+    SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup>;
+};
 let _ret: IndexType | null = null;
 export const createIndex = async (): Promise<IndexType> => {
     if (_ret) {
@@ -71,19 +78,21 @@ export const createIndex = async (): Promise<IndexType> => {
     const keyItemGroupMap: Map<Midashi, ItemGroup[]> = new Map();
     const SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup> = new Map();
     const SynonymsDictionary = await fetchDictionary();
-    SynonymsDictionary.forEach(group => {
+    SynonymsDictionary.forEach((group) => {
         const groupByVocabularyNumber = group.items.reduce((res, item) => {
             res[item.vocabularyNumber!] = (res[item.vocabularyNumber!] || []).concat(item);
             return res;
         }, {} as { [index: string]: SudachiSynonyms[] });
-        const itemGroups = Object.values(groupByVocabularyNumber).filter(items => {
-            return items.length > 1;
-        }).map(items => {
-            return new ItemGroup(items);
-        });
+        const itemGroups = Object.values(groupByVocabularyNumber)
+            .filter((items) => {
+                return items.length > 1;
+            })
+            .map((items) => {
+                return new ItemGroup(items);
+            });
         // register key with itemGroup
-        itemGroups.forEach(itemGroup => {
-            itemGroup.items.forEach(item => {
+        itemGroups.forEach((itemGroup) => {
+            itemGroup.items.forEach((item) => {
                 const oldItemGroup = keyItemGroupMap.get(item.midashi) || [];
                 keyItemGroupMap.set(item.midashi, oldItemGroup.concat(itemGroup));
                 SudachiSynonymsItemGroup.set(item, itemGroup);
@@ -92,7 +101,7 @@ export const createIndex = async (): Promise<IndexType> => {
     });
     _ret = {
         keyItemGroupMap,
-        SudachiSynonymsItemGroup
+        SudachiSynonymsItemGroup,
     };
     return Promise.resolve(_ret);
 };

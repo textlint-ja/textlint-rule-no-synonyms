@@ -22,86 +22,103 @@ tester.run("textlint-rule-no-synonyms", rule, {
         {
             text: `ウェブアプリとウェブアプリケーションの違いは許容する`,
             options: {
-                allows: ["ウェブアプリ"]　// <= 片方が許可されていればOK
-            }
+                allows: ["ウェブアプリ"], // <= 片方が許可されていればOK
+            },
         },
         // preferWords
         {
             text: `ユーザーだけに統一されていればユーザーは許容する`,
             options: {
-                preferWords: ["ユーザー"]
-            }
+                preferWords: ["ユーザー"],
+            },
         },
     ],
-    invalid: [{
-        text: "サーバとサーバーの表記揺れがある",
-        errors: [{
-            message: "同義語である「サーバ」と「サーバー」が利用されています",
-            index: 4
-        }]
-    }, {
-        text: "この雇入と雇入れの違いは難しい問題だ",
-        errors: [{
-            message: "同義語である「雇入」と「雇入れ」が利用されています",
-            index: 5
-        }]
-    },
+    invalid: [
+        {
+            text: "サーバとサーバーの表記揺れがある",
+            errors: [
+                {
+                    message: "同義語である「サーバ」と「サーバー」が利用されています",
+                    index: 4,
+                },
+            ],
+        },
+        {
+            text: "この雇入と雇入れの違いは難しい問題だ",
+            errors: [
+                {
+                    message: "同義語である「雇入」と「雇入れ」が利用されています",
+                    index: 5,
+                },
+            ],
+        },
         {
             text: "blogはブログです",
             options: {
-                allowAlphabet: false
+                allowAlphabet: false,
             },
-            errors: [{
-                message: "同義語である「blog」と「ブログ」が利用されています",
-                index: 5
-            }]
+            errors: [
+                {
+                    message: "同義語である「blog」と「ブログ」が利用されています",
+                    index: 5,
+                },
+            ],
         },
         {
             text: "1は数字の一種です",
             options: {
-                allowNumber: false
+                allowNumber: false,
             },
-            errors: [{
-                message: "同義語である「1」と「一」が利用されています",
-                index: 5
-            }]
+            errors: [
+                {
+                    message: "同義語である「1」と「一」が利用されています",
+                    index: 5,
+                },
+            ],
         },
         {
             text: "ユーザーは許可しユーザはエラー。allowAlphabetがtrueならuserはエラーにならない",
             output: "ユーザーは許可しユーザーはエラー。allowAlphabetがtrueならuserはエラーにならない",
             options: {
-                preferWords: ["ユーザー"]
+                preferWords: ["ユーザー"],
             },
-            errors: [{
-                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
-                index: 8
-            }]
+            errors: [
+                {
+                    message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                    index: 8,
+                },
+            ],
         },
         {
             text: "ユーザーは許可しallowAlphabetがfalseならユーザもuserもエラー",
             output: "ユーザーは許可しallowAlphabetがfalseならユーザーもユーザーもエラー",
             options: {
                 preferWords: ["ユーザー"],
-                allowAlphabet: false
+                allowAlphabet: false,
             },
-            errors: [{
-                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
-                index: 29
-            }, {
-                message: "「ユーザー」の同義語である「user」が利用されています",
-                index: 33
-            }]
+            errors: [
+                {
+                    message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                    index: 29,
+                },
+                {
+                    message: "「ユーザー」の同義語である「user」が利用されています",
+                    index: 33,
+                },
+            ],
         },
         {
             text: "ユーザはエラー",
             output: "ユーザーはエラー",
             options: {
-                preferWords: ["ユーザー"]
+                preferWords: ["ユーザー"],
             },
-            errors: [{
-                message: "「ユーザー」の同義語である「ユーザ」が利用されています",
-                index: 0
-            }]
+            errors: [
+                {
+                    message: "「ユーザー」の同義語である「ユーザ」が利用されています",
+                    index: 0,
+                },
+            ],
         },
-    ]
+    ],
 });
