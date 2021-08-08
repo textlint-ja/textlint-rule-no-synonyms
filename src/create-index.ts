@@ -69,10 +69,11 @@ export type IndexType = {
     keyItemGroupMap: Map<Midashi, ItemGroup[]>;
     SudachiSynonymsItemGroup: Map<SudachiSynonyms, ItemGroup>;
 };
-let _ret: IndexType | null = null;
-export const createIndex = async (): Promise<IndexType> => {
-    if (_ret) {
-        return Promise.resolve(_ret);
+const _cache = new Map<boolean, IndexType>();
+const firstVocabularyNumber = 1;
+export const createIndex = async ({ allowLexeme }: { allowLexeme: boolean }): Promise<IndexType> => {
+    if (_cache.has(allowLexeme)) {
+        return Promise.resolve(_cache.get(allowLexeme)!);
     }
     assertInstallationSudachiSynonymsDictionary();
     const keyItemGroupMap: Map<Midashi, ItemGroup[]> = new Map();
@@ -80,7 +81,8 @@ export const createIndex = async (): Promise<IndexType> => {
     const SynonymsDictionary = await fetchDictionary();
     SynonymsDictionary.forEach((group) => {
         const groupByVocabularyNumber = group.items.reduce((res, item) => {
-            res[item.vocabularyNumber!] = (res[item.vocabularyNumber!] || []).concat(item);
+            const vocabularyNumber = allowLexeme ? item.vocabularyNumber! : firstVocabularyNumber;
+            res[vocabularyNumber] = (res[vocabularyNumber] || []).concat(item);
             return res;
         }, {} as { [index: string]: SudachiSynonyms[] });
         const itemGroups = Object.values(groupByVocabularyNumber)
@@ -99,9 +101,10 @@ export const createIndex = async (): Promise<IndexType> => {
             });
         });
     });
-    _ret = {
+    const _ret = {
         keyItemGroupMap,
         SudachiSynonymsItemGroup
     };
+    _cache.set(allowLexeme, _ret);
     return Promise.resolve(_ret);
 };

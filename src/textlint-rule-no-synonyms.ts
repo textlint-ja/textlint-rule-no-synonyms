@@ -33,25 +33,34 @@ export interface Options {
      * Default: true
      */
     allowNumber?: boolean;
+    /**
+     * 語彙素の異なる同義語を許可するかどうか
+     * trueの場合は語彙素の異なる同義語を許可します
+     * 例) 「ルーム」と「部屋」
+     * Default: true
+     */
+    allowLexeme?: boolean;
 }
 
 export const DefaultOptions: Required<Options> = {
     allows: [],
     preferWords: [],
     allowAlphabet: true,
-    allowNumber: true
+    allowNumber: true,
+    allowLexeme: true
 };
 
 const report: TextlintRuleReporter<Options> = (context, options = {}) => {
     const allowAlphabet = options.allowAlphabet ?? DefaultOptions.allowAlphabet;
     const allowNumber = options.allowNumber ?? DefaultOptions.allowNumber;
+    const allowLexeme = options.allowLexeme ?? DefaultOptions.allowLexeme;
     const allows = options.allows !== undefined ? options.allows : DefaultOptions.allows;
     const preferWords = options.preferWords !== undefined ? options.preferWords : DefaultOptions.preferWords;
     const { Syntax, getSource, RuleError, fixer } = context;
     const usedSudachiSynonyms: Set<SudachiSynonyms> = new Set();
     const locationMap: Map<SudachiSynonyms, { index: number }> = new Map();
     const usedItemGroup: Set<ItemGroup> = new Set();
-    const indexPromise = createIndex();
+    const indexPromise = createIndex({ allowLexeme });
     const matchSegment = (segment: string, absoluteIndex: number, keyItemGroupMap: Map<Midashi, ItemGroup[]>) => {
         const itemGroups = keyItemGroupMap.get(segment);
         if (!itemGroups) {
@@ -104,7 +113,8 @@ const report: TextlintRuleReporter<Options> = (context, options = {}) => {
                             allowNumber
                         });
                         const preferWord = preferWords.find((midashi) => itemGroup.getItem(midashi));
-                        if (preferWord) {
+                        const allowed = allows.find((midashi) => itemGroup.getItem(midashi));
+                        if (preferWord && !allowed) {
                             const deniedItems = items.filter((item) => item.midashi !== preferWord);
                             for (const item of deniedItems) {
                                 const index = locationMap.get(item)?.index ?? 0;

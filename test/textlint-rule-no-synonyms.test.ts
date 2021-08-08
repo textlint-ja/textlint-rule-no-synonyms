@@ -31,6 +31,28 @@ tester.run("textlint-rule-no-synonyms", rule, {
             options: {
                 preferWords: ["ユーザー"]
             }
+        },
+        // allowLexeme
+        {
+            text: "部屋の同義語はルームです",
+            options: {
+                allowLexeme: true
+            }
+        },
+        {
+            text: "部屋の英語はroomです",
+            options: {
+                allowLexeme: false,
+                allowAlphabet: true
+            }
+        },
+        {
+            text: "部屋の英語はroomです",
+            options: {
+                allowLexeme: false,
+                allowAlphabet: false,
+                allows: ["部屋"] // <= 片方が許可されていればOK
+            }
         }
     ],
     invalid: [
@@ -77,6 +99,31 @@ tester.run("textlint-rule-no-synonyms", rule, {
             ]
         },
         {
+            text: "部屋のカタカナ英語はルームです",
+            options: {
+                allowLexeme: false
+            },
+            errors: [
+                {
+                    message: "同義語である「部屋」と「ルーム」が利用されています",
+                    index: 10
+                }
+            ]
+        },
+        {
+            text: "部屋の英語はroomです",
+            options: {
+                allowAlphabet: false,
+                allowLexeme: false
+            },
+            errors: [
+                {
+                    message: "同義語である「部屋」と「room」が利用されています",
+                    index: 6
+                }
+            ]
+        },
+        {
             text: "ユーザーは許可しユーザはエラー。allowAlphabetがtrueならuserはエラーにならない",
             output: "ユーザーは許可しユーザーはエラー。allowAlphabetがtrueならuserはエラーにならない",
             options: {
@@ -117,6 +164,20 @@ tester.run("textlint-rule-no-synonyms", rule, {
                 {
                     message: "「ユーザー」の同義語である「ユーザ」が利用されています",
                     index: 0
+                }
+            ]
+        },
+        {
+            text: "ルームは許可しallowLexemeがfalseなら部屋もエラー",
+            output: "ルームは許可しallowLexemeがfalseならルームもエラー",
+            options: {
+                preferWords: ["ルーム"],
+                allowLexeme: false
+            },
+            errors: [
+                {
+                    message: "「ルーム」の同義語である「部屋」が利用されています",
+                    index: 26
                 }
             ]
         }
