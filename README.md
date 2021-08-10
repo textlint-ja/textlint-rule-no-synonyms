@@ -117,7 +117,7 @@ See [Releases page](https://github.com/textlint-ja/textlint-rule-no-synonyms/rel
 
 Install devDependencies and Run `npm test`:
 
-    npm i -d && npm test
+    npm test
 
 ## Contributing
 
