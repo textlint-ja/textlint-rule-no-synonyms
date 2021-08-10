@@ -76,6 +76,13 @@ textlint --rule @textlint-ja/no-synonyms README.md
      * Default: true
      */
     allowNumber?: boolean;
+    /**
+     * 語彙素の異なる同義語を許可するかどうか
+     * trueの場合は語彙素の異なる同義語を許可します
+     * 例) 「ルーム」と「部屋」
+     * Default: true
+     */
+    allowLexeme?: boolean;
 }
 ```
 
@@ -88,7 +95,8 @@ textlint --rule @textlint-ja/no-synonyms README.md
             "allows": ["ウェブアプリ", "ウェブアプリケーション"],
             "preferWords": ["ユーザー"],
             "allowAlphabet": false,
-            "allowNumber": false
+            "allowNumber": false,
+            "allowLexeme": false
         }
     }
 }
